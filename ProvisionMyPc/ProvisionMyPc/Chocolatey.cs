@@ -1,9 +1,18 @@
 ﻿using Cupboard;
+using System;
 
 namespace ProvisionMyPc
 {
     public sealed class Chocolatey : Manifest
     {
+
+        private readonly List<string> _appsToInstall;
+
+        public Chocolatey(CupboardConfig config)
+        {
+            _appsToInstall = config.AppsToInstall;
+        }
+
         public override void Execute(ManifestContext context)
         {
             // Download
@@ -25,10 +34,12 @@ namespace ProvisionMyPc
                 .After<RegistryValue>("Set execution policy")
                 .After<Download>("https://chocolatey.org/install.ps1");
 
-            // Install VSCode via Chocolatey
-            context.Resource<ChocolateyPackage>("vscode")
-                .Ensure(PackageState.Installed)
-                .After<PowerShell>("Install Chocolatey");
+            foreach(var app in _appsToInstall)
+            {
+                context.Resource<ChocolateyPackage>(app)
+                    .Ensure(PackageState.Installed)
+                    .After<PowerShell>("Install Chocolatey");
+            }
         }
     }
 }
