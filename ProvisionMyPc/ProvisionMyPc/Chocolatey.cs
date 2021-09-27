@@ -1,16 +1,31 @@
 ﻿using Cupboard;
-using System;
 
 namespace ProvisionMyPc
 {
     public sealed class Chocolatey : Manifest
     {
-
         private readonly List<string> _appsToInstall;
 
-        public Chocolatey(CupboardConfig config)
+        public Chocolatey()
         {
-            _appsToInstall = config.AppsToInstall;
+            _appsToInstall = new List<string>{
+                "googlechrome",
+                "7zip",
+                "vlc",
+                "vscode",
+                "sql-server-management-studio",
+                "microsoft-windows-terminal",
+                "spotify",
+                "slack",
+                "postman",
+                "docker-desktop",
+                "powertoys",
+                "sublimetext3",
+                "1password",
+                "discord",
+                "visualstudio2019community",
+                "github-desktop"
+            };
         }
 
         public override void Execute(ManifestContext context)
